@@ -1,6 +1,6 @@
 Name:           perl-Test-MockObject
 Version:        1.09
-Release:        3.1%{?dist}
+Release:        6.1%{?dist}
 Summary:        Perl extension for emulating troublesome interfaces
 
 Group:          Development/Libraries
@@ -10,6 +10,7 @@ Source0:        http://www.cpan.org/authors/id/C/CH/CHROMATIC/Test-MockObject-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+BuildRequires:  perl(CGI)
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Test::Exception)
 BuildRequires:  perl(Test::Pod), perl(Test::Pod::Coverage)
@@ -38,7 +39,8 @@ Now you have no excuse.)
 %install
 rm -rf $RPM_BUILD_ROOT
 ./Build install destdir=$RPM_BUILD_ROOT create_packlist=0
-chmod -R u+w $RPM_BUILD_ROOT/*
+find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null ';'
+%{_fixperms} $RPM_BUILD_ROOT/*
 
 
 %check
@@ -57,8 +59,17 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Dec 03 2009 Dennis Gregorovic <dgregor@redhat.com> - 1.09-3.1
-- Rebuilt for RHEL 6
+* Mon Aug 30 2010 Mark Chappell <tremble@fedoraproject.org> 1.09-6.1
+- EL6 needs the CGI package for the tests to run successfully
+
+* Thu May 06 2010 Marcela Maslanova <mmaslano@redhat.com> - 1.09-6
+- Mass rebuild with perl-5.12.0
+
+* Thu Feb  4 2010 Marcela Mašláňová <mmaslano@redhat.com> - 1.09-5
+- 552253 merge review
+
+* Fri Dec  4 2009 Stepan Kasal <skasal@redhat.com> - 1.09-4
+- rebuild against perl 5.10.1
 
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.09-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
